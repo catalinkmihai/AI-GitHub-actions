@@ -1,0 +1,28 @@
+name: Build Advanced Installer Project (.AIP)  Demo
+on: [workflow_dispatch]
+jobs:
+  advinst-aip-build-demo:
+    runs-on: windows-latest
+    name: Build Aip Demo
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Build AIP
+        uses: caphyon/advinst-github-action@v1.0
+        with:
+          advinst-version: '20.2'
+          advinst-license: ${{ secrets.ADVINST_LICENSE_KEY }}
+          advinst-enable-automation: 'true'
+          aip-path: ${{ github.workspace }}\SampleAppGHAction.aip
+          aip-build-name: DefaultBuild
+          aip-package-name: setup.msi
+          aip-output-dir:  ${{ github.workspace }}\setup
+          aip-commands: |
+            SetProperty FOO="foo"
+            SetVersion 1.2.0
+            NewShortcut -name "Test Sample Shortcut" -dir SHORTCUTDIR -target APPDIR\sample.exe -desc "Test shortcut for the sample.exe app" -mode normal
+      - name: Publish setup artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: setup
+          path: ${{ github.workspace }}\setup\setup.msi
