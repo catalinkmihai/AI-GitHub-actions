@@ -21,6 +21,7 @@ jobs:
             SetProperty FOO="foo"
             SetVersion 1.2.0
             NewShortcut -name "Test Sample Shortcut" -dir SHORTCUTDIR -target APPDIR\sample.exe -desc "Test shortcut for the sample.exe app" -mode normal
+            Save
       - name: Publish setup artifact
         uses: actions/upload-artifact@v2
         with:
